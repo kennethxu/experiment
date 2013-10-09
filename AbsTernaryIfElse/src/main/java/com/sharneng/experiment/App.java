@@ -7,12 +7,12 @@ package com.sharneng.experiment;
 public class App {
     public static void main(String[] args) throws Exception {
         Thread.sleep(5000);
-        AbsTernaryIfElseMinInline.main(args);
+        RunnerAbsInline.main(args);
         Thread.sleep(5000);
-        AbsTernaryIfElseMinOverride.main(args);
+        RunnerAbsOverride.main(args);
         Thread.sleep(5000);
-        AbsTernaryIfElseSwapInline.main(args);
+        RunnerOrderingInline.main(args);
         Thread.sleep(5000);
-        AbsTernaryIfElseSwapOverride.main(args);
+        RunnerOrderingOverride.main(args);
     }
 }

@@ -1,6 +1,6 @@
 package com.sharneng.experiment;
 
-public class AbsTernaryIfElseSwapOverride extends AbsTernaryIfElse {
+public class RunnerOrderingOverride extends Runner {
     private static final int LOOP_COUNT = 1000000;
 
     private static abstract class FixtureBase extends Fixture {

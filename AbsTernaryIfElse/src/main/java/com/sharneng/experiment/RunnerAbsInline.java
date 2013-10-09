@@ -1,6 +1,6 @@
 package com.sharneng.experiment;
 
-public class AbsTernaryIfElseMinInline extends AbsTernaryIfElse {
+public class RunnerAbsInline extends Runner {
     private static final int LOOP_COUNT = 10000000;
 
     private static final class Baseline extends Fixture {

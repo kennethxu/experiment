@@ -2,7 +2,7 @@ package com.sharneng.experiment;
 
 import com.codahale.metrics.Snapshot;
 
-public class AbsTernaryIfElse {
+public class Runner {
 
     protected static void runAndReport(Fixture[] fixtures, int loopCount) {
         // warn up
