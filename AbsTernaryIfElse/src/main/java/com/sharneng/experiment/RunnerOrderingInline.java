@@ -78,7 +78,7 @@ public class RunnerOrderingInline extends Runner {
 
     public static void main(String[] args) {
         Fixture[] fixtures = new Fixture[] { new Baseline(), new MathAbs(), new Ternary(), new IfElse() };
-        System.out.println("Swap Inline:");
+        System.out.println("Ordering Inline:");
         runAndReport(fixtures, LOOP_COUNT);
     }
 }

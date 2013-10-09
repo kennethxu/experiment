@@ -10,8 +10,7 @@ public class RunnerAbsInline extends Runner {
             final int b[] = target;
             for (int i = LOOP_COUNT; i > 0; i--) {
                 for (int j = ELEMENT_END; j >= 0; j--) {
-                    final int x = a[j];
-                    b[j] = x;
+                    b[j] = a[j];
                 }
             }
         }
@@ -24,8 +23,7 @@ public class RunnerAbsInline extends Runner {
             final int b[] = target;
             for (int i = LOOP_COUNT; i > 0; i--) {
                 for (int j = ELEMENT_END; j >= 0; j--) {
-                    final int x = a[j];
-                    b[j] = Math.abs(x);
+                    b[j] = Math.abs(a[j]);
                 }
             }
         }
@@ -38,8 +36,7 @@ public class RunnerAbsInline extends Runner {
             final int b[] = target;
             for (int i = LOOP_COUNT; i > 0; i--) {
                 for (int j = ELEMENT_END; j >= 0; j--) {
-                    final int x = a[j];
-                    b[j] = x >= 0 ? x : -x;
+                    b[j] = a[j] >= 0 ? a[j] : -a[j];
                 }
             }
         }
@@ -52,15 +49,14 @@ public class RunnerAbsInline extends Runner {
             final int b[] = target;
             for (int i = LOOP_COUNT; i > 0; i--) {
                 for (int j = ELEMENT_END; j >= 0; j--) {
-                    final int x = a[j];
-                    if (x >= 0) b[j] = x;
-                    else b[j] = -x;
+                    if (a[j] >= 0) b[j] = a[j];
+                    else b[j] = -a[j];
                 }
             }
         }
     }
 
-    private static final class IfElse2 extends Fixture {
+    private static final class IfOnly extends Fixture {
         @Override
         final void run() {
             final int a[] = source;
@@ -76,8 +72,8 @@ public class RunnerAbsInline extends Runner {
     }
 
     public static void main(String[] args) {
-        Fixture[] fixtures = new Fixture[] { new Baseline(), new MathAbs(), new Ternary(), new IfElse(), new IfElse2() };
-        System.out.println("Min Inline:");
+        Fixture[] fixtures = new Fixture[] { new Baseline(), new MathAbs(), new Ternary(), new IfElse(), new IfOnly() };
+        System.out.println("Abs Inline:");
         runAndReport(fixtures, LOOP_COUNT);
     }
 }

@@ -1,11 +1,9 @@
 package com.sharneng.experiment;
 
 import com.codahale.metrics.Histogram;
-import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SlidingWindowReservoir;
 
 abstract class Fixture {
-    private static final MetricRegistry metrics = new MetricRegistry();
-
     static final int source[] = new int[] { 3, -3949, -5, 4439858, 9298, -939848498, 320848848, -932, 927719849,
             -39875849, 1 };
     static final int target[] = new int[source.length];
@@ -16,7 +14,7 @@ abstract class Fixture {
 
     Fixture() {
         this.name = this.getClass().getSimpleName();
-        this.histogram = metrics.histogram(name);
+        this.histogram = new Histogram(new SlidingWindowReservoir(Runner.MEASURED_RUN));
     }
 
     abstract void run();

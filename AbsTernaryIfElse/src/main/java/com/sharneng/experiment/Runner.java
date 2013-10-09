@@ -3,6 +3,7 @@ package com.sharneng.experiment;
 import com.codahale.metrics.Snapshot;
 
 public class Runner {
+    public static final int MEASURED_RUN = 100;
 
     protected static void runAndReport(Fixture[] fixtures, int loopCount) {
         // warn up
@@ -12,7 +13,7 @@ public class Runner {
         }
 
         // run and measure it
-        for (int j = 100; j > 0; j--) {
+        for (int j = MEASURED_RUN; j > 0; j--) {
             for (Fixture f : fixtures)
                 f.runMeasured();
         }

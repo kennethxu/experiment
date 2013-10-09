@@ -66,7 +66,7 @@ public class RunnerOrderingOverride extends Runner {
 
     public static void main(String[] args) {
         Fixture[] fixtures = new Fixture[] { new Baseline(), new MathAbs(), new Ternary(), new IfElse() };
-        System.out.println("Swap Override:");
+        System.out.println("Ordering Override:");
         runAndReport(fixtures, LOOP_COUNT);
     }
 }
