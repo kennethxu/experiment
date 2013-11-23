@@ -1,6 +1,6 @@
 package com.sharneng.experiment.median;
 
-import com.sharneng.experiment.median.MedianFinder;
+import com.sharneng.algorithm.median.MedianFinder;
 
 import org.junit.Test;
 
