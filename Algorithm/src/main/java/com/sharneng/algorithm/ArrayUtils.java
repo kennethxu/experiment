@@ -64,4 +64,32 @@ public class ArrayUtils {
         for (int i = from; i < to; i++, index++)
             target[index] = source[i];
     }
+
+    /**
+     * Helper method to compute the optimal new array size to accommodate the required capacity. This is typically used
+     * to compute next array size of array based unbounded collection data structure.
+     * 
+     * @param oldCapacity
+     *            current capacity
+     * @param minCapacity
+     *            the required capacity
+     * @return the suggested new capacity
+     */
+    public static int newCapacity(int oldCapacity, int minCapacity) {
+        // Double size if small; else grow by 50%
+        int newCapacity = oldCapacity + ((oldCapacity < 64) ? (oldCapacity + 2) : (oldCapacity >> 1));
+        // overflow-conscious code
+        if (newCapacity - ArrayUtils.MAX_ARRAY_SIZE > 0) {
+            if (minCapacity < 0) // overflow
+            throw new OutOfMemoryError("exceeded array size limit");
+            newCapacity = (minCapacity > ArrayUtils.MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : ArrayUtils.MAX_ARRAY_SIZE;
+        }
+        return newCapacity;
+    }
+
+    /**
+     * The maximum size of array to allocate. Some VMs reserve some header words in an array. Attempts to allocate
+     * larger arrays may result in OutOfMemoryError: Requested array size exceeds VM limit
+     */
+    public static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 }
