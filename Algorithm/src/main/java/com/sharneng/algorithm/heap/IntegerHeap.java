@@ -37,7 +37,7 @@ public class IntegerHeap implements Heap<Integer> {
     }
 
     public IntegerHeap(int initCapacity, IntComparator comparator, SortOrder order) {
-        sifter = new Sifter(new int[initCapacity]).setComparator(comparator).setSortOrder(order);
+        sifter = new Sifter(new int[initCapacity]).setSize(0).setComparator(comparator).setSortOrder(order);
     }
 
     @Override

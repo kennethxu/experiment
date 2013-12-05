@@ -4,7 +4,7 @@ import com.sharneng.algorithm.median.MedianFinder;
 
 import org.junit.Test;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 public class MedianFinderTest {
 
