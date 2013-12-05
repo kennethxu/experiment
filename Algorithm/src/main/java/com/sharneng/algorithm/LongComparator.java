@@ -37,7 +37,7 @@ public interface LongComparator extends Comparator<Long> {
     /**
      * A comparator that sorts the long value in ascending order.
      */
-    static LongComparator ASCENDING = new Base() {
+    LongComparator ASCENDING = new Base() {
         @Override
         public int compare(long x, long y) {
             return Long.signum(x - y);
@@ -45,9 +45,14 @@ public interface LongComparator extends Comparator<Long> {
     };
 
     /**
+     * A comparator that sorts the long value in natural ascending order. This is same as {@link #ASCENDING}.
+     */
+    LongComparator NATURAL = ASCENDING;
+
+    /**
      * A comparator that sorts the long value in descending order.
      */
-    static LongComparator DESCENDING = new Base() {
+    LongComparator DESCENDING = new Base() {
         @Override
         public int compare(long x, long y) {
             return Long.signum(y - x);

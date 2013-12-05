@@ -35,9 +35,9 @@ public interface IntComparator extends Comparator<Integer> {
     }
 
     /**
-     * A comparator that sorts the int value in ascending order.
+     * A comparator that sorts the int value in natural ascending order.
      */
-    static IntComparator ASCENDING = new Base() {
+    IntComparator ASCENDING = new Base() {
         @Override
         public int compare(int x, int y) {
             return x - y;
@@ -45,9 +45,14 @@ public interface IntComparator extends Comparator<Integer> {
     };
 
     /**
-     * A comparator that sorts the int value in descending order.
+     * A comparator that sorts the int value in natural ascending order. This is same as {@link #ASCENDING}.
      */
-    static IntComparator DESCENDING = new Base() {
+    IntComparator NATURAL = ASCENDING;
+
+    /**
+     * A comparator that sorts the int value in natural descending order.
+     */
+    IntComparator DESCENDING = new Base() {
         @Override
         public int compare(int x, int y) {
             return y - x;

@@ -37,7 +37,7 @@ public interface DoubleComparator extends Comparator<Double> {
     /**
      * A comparator that sorts the double value in ascending order.
      */
-    static DoubleComparator ASCENDING = new Base() {
+    DoubleComparator ASCENDING = new Base() {
         @Override
         public int compare(double x, double y) {
             return (int) Math.signum(x - y);
@@ -45,9 +45,14 @@ public interface DoubleComparator extends Comparator<Double> {
     };
 
     /**
+     * A comparator that sorts the double value in natural ascending order. This is same as {@link #ASCENDING}.
+     */
+    DoubleComparator NATURAL = ASCENDING;
+
+    /**
      * A comparator that sorts the double value in descending order.
      */
-    static DoubleComparator DESCENDING = new Base() {
+    DoubleComparator DESCENDING = new Base() {
         @Override
         public int compare(double x, double y) {
             return (int) Math.signum(y - x);

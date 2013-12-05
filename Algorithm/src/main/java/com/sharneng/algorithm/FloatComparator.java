@@ -37,7 +37,7 @@ public interface FloatComparator extends Comparator<Float> {
     /**
      * A comparator that sorts the float value in ascending order.
      */
-    static FloatComparator ASCENDING = new Base() {
+    FloatComparator ASCENDING = new Base() {
         @Override
         public int compare(float x, float y) {
             return (int) Math.signum(x - y);
@@ -45,9 +45,14 @@ public interface FloatComparator extends Comparator<Float> {
     };
 
     /**
+     * A comparator that sorts the float value in natural ascending order. This is same as {@link #ASCENDING}.
+     */
+    FloatComparator NATURAL = ASCENDING;
+
+    /**
      * A comparator that sorts the float value in descending order.
      */
-    static FloatComparator DESCENDING = new Base() {
+    FloatComparator DESCENDING = new Base() {
         @Override
         public int compare(float x, float y) {
             return (int) Math.signum(y - x);

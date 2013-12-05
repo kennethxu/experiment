@@ -1,65 +1,59 @@
 package com.sharneng.algorithm;
 
 import java.util.Arrays;
-import java.util.Random;
 
-public class ArrayUtils {
+/**
+ * Utility class contains common methods dealing with array.
+ * 
+ * @author Kenneth Xu
+ * 
+ */
+public final class ArrayUtils {
+    private ArrayUtils() {
+    }
 
+    /**
+     * Swap two elements in an array.
+     * 
+     * @param array
+     *            array containing the elements to be swapped
+     * @param x
+     *            the index of the first element to be swapped
+     * @param y
+     *            the index of the second element to be swapped
+     */
     public static void swap(int[] array, int x, int y) {
         int temp = array[x];
         array[x] = array[y];
         array[y] = temp;
     }
 
+    /**
+     * Print the array with a comment. This is debug helper, need refactoring.
+     * 
+     * @param comment
+     *            comment to print before array
+     * @param array
+     *            the arrya to print
+     */
     public static void print(String comment, int[] array) {
-        System.out.printf("%10s: %s\n", comment, Arrays.toString(array));
+        System.out.printf("%10s: %s%n", comment, Arrays.toString(array));
     }
 
-    public static int[] orderedArray(int n) {
-        int[] a = new int[n];
-        for (int i = n - 1; i >= 0; i--)
-            a[i] = i;
-        return a;
-    }
-
-    public static int[] randomArray(int n) {
-        int[] a = new int[n];
-        Random r = new Random();
-        for (int i = n - 1; i >= 0; i--) {
-            a[i] = Math.abs(r.nextInt());
-        }
-        return a;
-
-    }
-
-    public static int[] randomArray(int n, int max) {
-        int[] a = new int[n];
-        Random r = new Random();
-        for (int i = n - 1; i >= 0; i--) {
-            a[i] = r.nextInt(max);
-        }
-        return a;
-
-    }
-
-    public static int[] sameArray(int n, int value) {
-        int[] a = new int[n];
-        Arrays.fill(a, value);
-        return a;
-    }
-
-    public static int[] clone(int[] a) {
-        return a.clone();
-    }
-
-    public static void AssertEquals(int[] expected, int[] actual) {
-        if (!Arrays.equals(expected, actual)) {
-            ArrayUtils.print("Expected", expected);
-            ArrayUtils.print("Actual", actual);
-            throw new RuntimeException("Array is not in order.");
-        }
-    }
-
+    /**
+     * Copies array elements from one to another.
+     * 
+     * @param source
+     *            the source array containing the elements to be copied.
+     * @param from
+     *            the starting (inclusive) index of the element in source array to be copied
+     * @param to
+     *            the ending (exclusive) index of the element in the source array to be copied
+     * @param target
+     *            the target array to copy the elements to
+     * @param index
+     *            the starting index in the target array to copy the elements
+     */
     public static void copy(int[] source, int from, int to, int[] target, int index) {
         for (int i = from; i < to; i++, index++)
             target[index] = source[i];
@@ -77,6 +71,7 @@ public class ArrayUtils {
      */
     public static int newCapacity(int oldCapacity, int minCapacity) {
         // Double size if small; else grow by 50%
+        // SUPPRESS CHECKSTYLE MagicNumber BECAUSE 64 is an experienced number.
         int newCapacity = oldCapacity + ((oldCapacity < 64) ? (oldCapacity + 2) : (oldCapacity >> 1));
         // overflow-conscious code
         if (newCapacity - ArrayUtils.MAX_ARRAY_SIZE > 0) {
@@ -91,5 +86,6 @@ public class ArrayUtils {
      * The maximum size of array to allocate. Some VMs reserve some header words in an array. Attempts to allocate
      * larger arrays may result in OutOfMemoryError: Requested array size exceeds VM limit
      */
+    // SUPPRESS CHECKSTYLE MagicNumber BECAUSE 8 is JVM overhead
     public static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 }
