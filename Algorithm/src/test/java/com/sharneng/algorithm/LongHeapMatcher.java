@@ -6,9 +6,9 @@ class LongHeapMatcher extends AbstractHeapMatcher {
     private final LongComparator comparator;
     private long[] array;
 
-    public LongHeapMatcher(int size, final SortOrder sortOrder) {
-        super(size, sortOrder == null ? SortOrder.ASCENDING : sortOrder);
-        comparator = sortOrder == SortOrder.DESCENDING ? LongComparator.DESCENDING : LongComparator.ASCENDING;
+    public LongHeapMatcher(int size, final Scending scending) {
+        super(size, scending == null ? Scending.ASCENDING : scending);
+        comparator = scending == Scending.DESCENDING ? LongComparator.DESCENDING : LongComparator.ASCENDING;
     }
 
     public LongHeapMatcher(int size, LongComparator comparator) {

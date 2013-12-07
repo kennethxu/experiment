@@ -6,9 +6,9 @@ class SortedFloatArrayMatcher extends AbstractSortedArrayMatcher {
     private final FloatComparator comparator;
     private float[] array;
 
-    public SortedFloatArrayMatcher(int size, final SortOrder sortOrder) {
-        super(size, sortOrder == null ? SortOrder.ASCENDING : sortOrder);
-        comparator = sortOrder == SortOrder.DESCENDING ? FloatComparator.DESCENDING : FloatComparator.ASCENDING;
+    public SortedFloatArrayMatcher(int size, final Scending scending) {
+        super(size, scending == null ? Scending.ASCENDING : scending);
+        comparator = scending == Scending.DESCENDING ? FloatComparator.DESCENDING : FloatComparator.ASCENDING;
     }
 
     public SortedFloatArrayMatcher(int size, FloatComparator comparator) {

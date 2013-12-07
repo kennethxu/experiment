@@ -1,12 +1,12 @@
 package com.sharneng.algorithm.sort;
 
-import com.sharneng.algorithm.heap.IntegerHeap;
+import com.sharneng.algorithm.heap.IntHeap;
 
 public class HeapSort implements Sorter {
 
     @Override
     public void sort(int[] a) {
-        new IntegerHeap.Sifter(a).sort();
+        new IntHeap(a).setSize(a.length).sort();
     }
 
 }

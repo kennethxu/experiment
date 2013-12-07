@@ -6,9 +6,9 @@ class SortedIntArrayMatcher extends AbstractSortedArrayMatcher {
     private final IntComparator comparator;
     private int[] array;
 
-    public SortedIntArrayMatcher(int size, final SortOrder sortOrder) {
-        super(size, sortOrder == null ? SortOrder.ASCENDING : sortOrder);
-        comparator = sortOrder == SortOrder.DESCENDING ? IntComparator.DESCENDING : IntComparator.ASCENDING;
+    public SortedIntArrayMatcher(int size, final Scending scending) {
+        super(size, scending == null ? Scending.ASCENDING : scending);
+        comparator = scending == Scending.DESCENDING ? IntComparator.DESCENDING : IntComparator.ASCENDING;
     }
 
     public SortedIntArrayMatcher(int size, IntComparator comparator) {

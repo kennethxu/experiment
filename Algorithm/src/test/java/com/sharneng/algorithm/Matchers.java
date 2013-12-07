@@ -15,17 +15,17 @@ public class Matchers extends org.hamcrest.Matchers {
         return isHeap(type, size, null);
     }
 
-    public static <A> Matcher<A> isHeap(Class<A> type, final SortOrder order) {
-        return isHeap(type, -1, order);
+    public static <A> Matcher<A> isHeap(Class<A> type, final Scending scending) {
+        return isHeap(type, -1, scending);
     }
 
     @SuppressWarnings("unchecked")
-    public static <A> Matcher<A> isHeap(final Class<A> type, final int size, final SortOrder order) {
+    public static <A> Matcher<A> isHeap(final Class<A> type, final int size, final Scending scending) {
         if (!type.isArray()) throw new IllegalArgumentException("type must be an array but got " + type);
-        if (type == int[].class) return (Matcher<A>) new IntHeapMatcher(size, order);
-        if (type == long[].class) return (Matcher<A>) new LongHeapMatcher(size, order);
-        if (type == float[].class) return (Matcher<A>) new FloatHeapMatcher(size, order);
-        if (type == double[].class) return (Matcher<A>) new DoubleHeapMatcher(size, order);
+        if (type == int[].class) return (Matcher<A>) new IntHeapMatcher(size, scending);
+        if (type == long[].class) return (Matcher<A>) new LongHeapMatcher(size, scending);
+        if (type == float[].class) return (Matcher<A>) new FloatHeapMatcher(size, scending);
+        if (type == double[].class) return (Matcher<A>) new DoubleHeapMatcher(size, scending);
         return (Matcher<A>) isHeap();
     }
 
@@ -73,12 +73,12 @@ public class Matchers extends org.hamcrest.Matchers {
         return isSorted(type, size, null);
     }
 
-    public static <A> Matcher<A> isSorted(Class<A> type, final SortOrder order) {
-        return isSorted(type, -1, order);
+    public static <A> Matcher<A> isSorted(Class<A> type, final Scending scending) {
+        return isSorted(type, -1, scending);
     }
 
     @SuppressWarnings("unchecked")
-    public static <A> Matcher<A> isSorted(final Class<A> type, final int size, final SortOrder order) {
+    public static <A> Matcher<A> isSorted(final Class<A> type, final int size, final Scending order) {
         if (!type.isArray()) throw new IllegalArgumentException("type must be an array but got " + type);
         if (type == int[].class) return (Matcher<A>) new SortedIntArrayMatcher(size, order);
         if (type == long[].class) return (Matcher<A>) new SortedLongArrayMatcher(size, order);

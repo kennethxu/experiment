@@ -3,7 +3,7 @@ package com.sharneng.algorithm;
 import static com.sharneng.algorithm.Matchers.*;
 import static org.junit.Assert.*;
 
-import com.sharneng.algorithm.SortOrder;
+import com.sharneng.algorithm.Scending;
 
 import org.junit.Test;
 
@@ -37,31 +37,31 @@ public class MatchersTest {
     public void same() {
         int[] sut = new int[] { 2, 2, 2, 2, 2, 2, 2 };
         assertThat(sut, isHeap(int[].class));
-        assertThat(sut, isHeap(int[].class, SortOrder.DESCENDING));
+        assertThat(sut, isHeap(int[].class, Scending.DESCENDING));
     }
 
     @Test
     public void descending() {
         int[] sut = new int[] { 7, 6, 5, 4, 3, 2, 1 };
-        assertThat(sut, isHeap(int[].class, SortOrder.DESCENDING));
+        assertThat(sut, isHeap(int[].class, Scending.DESCENDING));
     }
 
     @Test
     public void descending_oversize() {
         int[] sut = new int[] { 7, 6, 5, 4, 3, 2, 1 };
-        assertThat(sut, isHeap(int[].class, 100, SortOrder.DESCENDING));
+        assertThat(sut, isHeap(int[].class, 100, Scending.DESCENDING));
     }
 
     @Test
     public void descending_sizeLimited() {
         int[] sut = new int[] { 7, 6, 5, 4, 3, 2, 1 };
-        assertThat(sut, isHeap(int[].class, 6, SortOrder.DESCENDING));
+        assertThat(sut, isHeap(int[].class, 6, Scending.DESCENDING));
     }
 
     @Test
     public void descending_empty() {
         int[] sut = new int[0];
-        assertThat(sut, isHeap(int[].class, SortOrder.DESCENDING));
+        assertThat(sut, isHeap(int[].class, Scending.DESCENDING));
     }
 
 }

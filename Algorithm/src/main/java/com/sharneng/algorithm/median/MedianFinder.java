@@ -1,12 +1,12 @@
 package com.sharneng.algorithm.median;
 
-import com.sharneng.algorithm.SortOrder;
-import com.sharneng.algorithm.heap.IntegerHeap;
+import com.sharneng.algorithm.Scending;
+import com.sharneng.algorithm.heap.IntHeap;
 
 /**
  * A class can be used to obtain the median value of all integers inserted into it.
  * 
- * @author Ken
+ * @author Kenneth Xu
  * 
  */
 public class MedianFinder {
@@ -16,9 +16,9 @@ public class MedianFinder {
     private static final int EVEN = 2;
 
     private int count = 0;
-    private final IntegerHeap left = new IntegerHeap(SortOrder.DESCENDING);
+    private final IntHeap left = new IntHeap().setScending(Scending.DESCENDING);
     private int median;
-    private final IntegerHeap right = new IntegerHeap();
+    private final IntHeap right = new IntHeap();
 
     /**
      * Gets the median value of all inserted elements.
@@ -27,7 +27,7 @@ public class MedianFinder {
      */
     public int getMedian() {
         if (count == 0) throw new IllegalStateException("No element");
-        return count % 2 == ODD ? median : (left.peekInt() + right.peekInt()) / 2;
+        return count % 2 == ODD ? median : (left.peek() + right.peek()) / 2;
     }
 
     /**
@@ -42,7 +42,7 @@ public class MedianFinder {
             median = i;
             return;
         case EVEN:
-            median = i < left.peekInt() ? left.pollAndOffer(i) : i > right.peekInt() ? right.pollAndOffer(i) : i;
+            median = i < left.peek() ? left.pollAndOffer(i) : i > right.peek() ? right.pollAndOffer(i) : i;
             return;
         case ODD:
             if (i <= median) {

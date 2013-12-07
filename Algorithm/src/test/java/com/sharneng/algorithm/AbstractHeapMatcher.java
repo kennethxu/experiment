@@ -4,8 +4,8 @@ import org.hamcrest.Description;
 
 public abstract class AbstractHeapMatcher extends AbstractArrayMatcher {
 
-    protected AbstractHeapMatcher(final int size, final SortOrder sortOrder) {
-        super(size, sortOrder);
+    protected AbstractHeapMatcher(final int size, final Scending scending) {
+        super(size, scending);
     }
 
     @Override

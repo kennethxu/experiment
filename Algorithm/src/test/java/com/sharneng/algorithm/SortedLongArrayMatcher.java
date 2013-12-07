@@ -6,9 +6,9 @@ class SortedLongArrayMatcher extends AbstractSortedArrayMatcher {
     private final LongComparator comparator;
     private long[] array;
 
-    public SortedLongArrayMatcher(int size, final SortOrder sortOrder) {
-        super(size, sortOrder == null ? SortOrder.ASCENDING : sortOrder);
-        comparator = sortOrder == SortOrder.DESCENDING ? LongComparator.DESCENDING : LongComparator.ASCENDING;
+    public SortedLongArrayMatcher(int size, final Scending sortOrder) {
+        super(size, sortOrder == null ? Scending.ASCENDING : sortOrder);
+        comparator = sortOrder == Scending.DESCENDING ? LongComparator.DESCENDING : LongComparator.ASCENDING;
     }
 
     public SortedLongArrayMatcher(int size, LongComparator comparator) {

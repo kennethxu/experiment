@@ -6,9 +6,9 @@ class IntHeapMatcher extends AbstractHeapMatcher {
     private final IntComparator comparator;
     private int[] array;
 
-    public IntHeapMatcher(int size, final SortOrder sortOrder) {
-        super(size, sortOrder == null ? SortOrder.ASCENDING : sortOrder);
-        comparator = sortOrder == SortOrder.DESCENDING ? IntComparator.DESCENDING : IntComparator.ASCENDING;
+    public IntHeapMatcher(int size, final Scending scending) {
+        super(size, scending == null ? Scending.ASCENDING : scending);
+        comparator = scending == Scending.DESCENDING ? IntComparator.DESCENDING : IntComparator.ASCENDING;
     }
 
     public IntHeapMatcher(int size, IntComparator comparator) {

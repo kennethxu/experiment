@@ -2,7 +2,6 @@ package com.sharneng.algorithm.heap;
 
 import static org.junit.Assert.*;
 
-import com.sharneng.algorithm.heap.IntegerHeap.Sifter;
 
 import static com.sharneng.algorithm.Matchers.*;
 
@@ -17,13 +16,13 @@ public class IntHeapSifterTest {
     private static final int length = 1000;
     private Random random;
     private int[] heap;
-    private Sifter sut;
+    private IntHeap sut;
 
     @Before
     public void setup() {
         random = new Random(0);
         heap = new int[length];
-        sut = new Sifter(heap);
+        sut = new IntHeap(heap);
     }
 
     @Test

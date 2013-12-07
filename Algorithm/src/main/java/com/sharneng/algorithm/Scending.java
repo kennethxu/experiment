@@ -1,12 +1,12 @@
 package com.sharneng.algorithm;
 
 /**
- * Enum to indicate the sort order.
+ * Enum to indicate the tendency of ordering.
  * 
  * @author Kenneth Xu
  * 
  */
-public enum SortOrder {
+public enum Scending {
     /** In ascending order. */
     ASCENDING,
     /** In descending order. */

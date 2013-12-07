@@ -5,13 +5,13 @@ import org.hamcrest.Description;
 
 public abstract class AbstractArrayMatcher extends BaseMatcher<int[]> {
 
-    protected final SortOrder sortOrder;
+    protected final Scending sending;
     protected final int size;
     protected int failedAt;
     protected int actualSize;
 
-    protected AbstractArrayMatcher(int size, SortOrder sortOrder) {
-        this.sortOrder = sortOrder;
+    protected AbstractArrayMatcher(int size, Scending sending) {
+        this.sending = sending;
         this.size = size;
     }
 
@@ -24,7 +24,7 @@ public abstract class AbstractArrayMatcher extends BaseMatcher<int[]> {
                 .appendText(" elements ");
         descriptionStructure(description);
         description.appendText(" heapified in the order of ");
-        switch (sortOrder) {
+        switch (sending) {
         case ASCENDING:
             description.appendText("ascending");
             break;

@@ -6,9 +6,9 @@ class SortedDoubleArrayMatcher extends AbstractSortedArrayMatcher {
     private final DoubleComparator comparator;
     private double[] array;
 
-    public SortedDoubleArrayMatcher(int size, final SortOrder sortOrder) {
-        super(size, sortOrder == null ? SortOrder.ASCENDING : sortOrder);
-        comparator = sortOrder == SortOrder.DESCENDING ? DoubleComparator.DESCENDING : DoubleComparator.ASCENDING;
+    public SortedDoubleArrayMatcher(int size, final Scending scending) {
+        super(size, scending == null ? Scending.ASCENDING : scending);
+        comparator = scending == Scending.DESCENDING ? DoubleComparator.DESCENDING : DoubleComparator.ASCENDING;
     }
 
     public SortedDoubleArrayMatcher(int size, DoubleComparator comparator) {
