@@ -15,12 +15,19 @@ package com.sharneng.algorithm.euler;
 final class P1 {
 
     public static void main(String[] args) {
-        // SUPPRESS CHECKSTYLE MagicNumber BECAUSE
-        System.out.println(sumArithmeticSeries(3, 1000) + sumArithmeticSeries(5, 1000) - sumArithmeticSeries(15, 1000));
+        final int limit = 1000;
+        System.out.println(sumOfMultiplesOf3and5(limit));
     }
 
-    static int sumArithmeticSeries(int inc, final int limit) {
-        int count = (limit - 1) / inc;
-        return inc * (1 + count) * count / 2;
+    static int sumOfMultiplesOf3and5(final int limit) {
+        final int three = 3;
+        final int five = 5;
+        return sumArithmeticSeries(three, limit, three) + sumArithmeticSeries(five, limit, five)
+                - sumArithmeticSeries(three * five, limit, three * five);
+    }
+
+    static int sumArithmeticSeries(final int start, final int end, final int inc) {
+        final int count = (end - start + inc - 1) / inc;
+        return (start + start + (count - 1) * inc) * count / 2;
     }
 }
