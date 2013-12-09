@@ -6,22 +6,63 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import javax.annotation.CheckForNull;
+
 /**
+ * /** This class provides skeletal implementations of some priority queue operations.
+ * <p>
+ * A priority queue implementation that extends this class must minimally define a method {@link java.util.Queue#offer}
+ * which does not permit insertion of <tt>null</tt> elements, along with methods {@link java.util.Queue#peek},
+ * {@link java.util.Queue#poll}, and {@link java.util.Collection#size}. Typically, additional methods will be overridden
+ * as well.
  * 
+ * @param <E>
+ *            the type of elements held in this collection
  * 
  * @author Kenneth Xu
  * 
  */
 public abstract class AbstractPriorityQueue<E> extends AbstractQueue<E> {
-    private static final int DEFAULT_INITIAL_CAPACITY = 11;
+    /**
+     * The recommended default initial capacity for sub classes.
+     */
+    protected static final int DEFAULT_INITIAL_CAPACITY = 11;
 
-    protected int modCount;
+    /**
+     * The number of times this priority queue has been <i>structurally modified</i>. See AbstractList for gory details.
+     */
+    // SUPPRESS CHECKSTYLE VisibilityModifier BECAUSE this is for sub class to keep modification tracking.
+    protected transient int modCount;
+
+    /**
+     * Inserts the specified element into this priority queue.
+     * 
+     * @param e
+     *            the element to be added
+     * @return {@code true} (as specified by {@link Collection#add})
+     * @throws ClassCastException
+     *             if the specified element cannot be compared with elements currently in this priority queue according
+     *             to the priority queue's ordering
+     * @throws NullPointerException
+     *             if the specified element is null
+     */
+    @Override
+    public boolean add(E e) {
+        return offer(e);
+    }
 
     @Override
     public E peek() {
         return size() > 0 ? elementAt(0) : null;
     }
 
+    /**
+     * Return the element at specified position.
+     * 
+     * @param i
+     *            the position of the element
+     * @return the element at the position
+     */
     protected abstract E elementAt(int i);
 
     /**
@@ -36,12 +77,17 @@ public abstract class AbstractPriorityQueue<E> extends AbstractQueue<E> {
     /**
      * Removes the ith element from queue.
      * 
-     * Normally this method leaves the elements at up to i-1, inclusive, untouched. Under these circumstances, it
-     * returns null. Occasionally, in order to maintain the heap invariant, it must swap a later element of the list
-     * with one earlier than i. Under these circumstances, this method returns the element that was previously at the
-     * end of the list and is now at some position before i. This fact is used by iterator.remove so as to avoid missing
-     * traversing elements.
+     * @param i
+     *            the index of the element to be removed
+     * @return Normally this method leaves the elements at up to i-1, inclusive, untouched. Under these circumstances,
+     *         it returns null. Occasionally, in order to maintain the heap invariant, it must swap a later element of
+     *         the list with one earlier than i. Under these circumstances, this method returns the element that was
+     *         previously at the end of the list and is now at some position before i. This fact is used by
+     *         iterator.remove so as to avoid missing traversing elements.
+     * 
+     * 
      */
+    @CheckForNull
     protected abstract E removeAt(int i);
 
     @Override
@@ -69,11 +115,13 @@ public abstract class AbstractPriorityQueue<E> extends AbstractQueue<E> {
          * 
          * We expect that most iterations, even those involving removals, will not need to store elements in this field.
          */
+        @CheckForNull
         private ArrayDeque<E> forgetMeNot = null;
 
         /**
          * Element returned by the most recent call to next iff that element was drawn from the forgetMeNot list.
          */
+        @CheckForNull
         private E lastRetElt = null;
 
         /**

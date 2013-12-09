@@ -27,7 +27,7 @@ public class MedianFinder {
      */
     public int getMedian() {
         if (count == 0) throw new IllegalStateException("No element");
-        return count % 2 == ODD ? median : (left.peek() + right.peek()) / 2;
+        return count % 2 == ODD ? median : (left.root() + right.root()) / 2;
     }
 
     /**
@@ -42,15 +42,15 @@ public class MedianFinder {
             median = i;
             return;
         case EVEN:
-            median = i < left.peek() ? left.pollAndOffer(i) : i > right.peek() ? right.pollAndOffer(i) : i;
+            median = i < left.root() ? left.swap(i) : i > right.root() ? right.swap(i) : i;
             return;
         case ODD:
             if (i <= median) {
-                left.offer(i);
-                right.offer(median);
+                left.add(i);
+                right.add(median);
             } else {
-                left.offer(median);
-                right.offer(i);
+                left.add(median);
+                right.add(i);
             }
             return;
         }

@@ -5,56 +5,146 @@ import com.sharneng.algorithm.IntComparator;
 import com.sharneng.algorithm.Utils;
 
 import java.util.Arrays;
-import java.util.NoSuchElementException;
 
+import javax.annotation.CheckForNull;
+
+/**
+ * An unbounded int binary heap. The elements of the heap are ordered according to their natural ordering, or by an
+ * {@link IntComparator} property, and the scending property.
+ * 
+ * <p>
+ * The <em>root</em> of this heap is the first element of the underlying array. It is the <em>least</em> element when
+ * ascending, or <em>most</em> element when descending, with respect to the specified ordering. If multiple elements are
+ * tied for least value when ascending, or most value when descending, the root is one of those elements -- ties are
+ * broken arbitrarily. The heap retrieval operations {@code swap}, and {@code element} access the element at the root of
+ * the heap.
+ * 
+ * <p>
+ * A heap is unbounded, but has an internal <i>capacity</i> governing the size of an array used to store the elements on
+ * the heap. It is always at least as large as the heap size. As elements are added to a heap, its capacity grows
+ * automatically. The details of the growth policy are not specified.
+ * 
+ * <p>
+ * <strong>Note that this implementation is not synchronized.</strong> Multiple threads should not access a
+ * {@code IntHeap} instance concurrently if any of the threads modifies the heap.
+ * 
+ * <p>
+ * Implementation note: this implementation provides O(log(n)) time for the inserting and removing methods, e.g.
+ * {@code remove()} and {@code add}. linear time for the {@code remove(int)} and {@code contains(int)} methods; and
+ * constant time for the retrieval methods ({@code element}, and {@code size}). This implementation of heap data
+ * structure provides the various heap operations with little protection. This is a sharp knife, you get great
+ * flexibility to manage the heap and in the meantime you can corrupt the structure if not careful.
+ * {@link IntPriorityQueue} provides a better protected queue implementation based on {@link IntHeap}.
+ * 
+ * <p>
+ * This class provide sift methods to deal with one element at a time, heapify method to reorder the underlying array
+ * into a binary heap, and sort method to sort the underlying array using the heap sort.
+ * 
+ * @author Kenneth Xu copied and adapted from open JDK implementation
+ * 
+ */
 public final class IntHeap extends AbstractHeap<IntHeap> {
     int[] array;
+    @CheckForNull
     private IntComparator comparator;
 
+    /**
+     * Construct a zero size heap with default capacity.
+     */
     public IntHeap() {
         array = new int[DEFAULT_INITIAL_CAPACITY];
     }
 
+    /**
+     * Construct a zero size heap with given array as storage.
+     * 
+     * @param array
+     *            the array to be used as underlying heap storage
+     */
     public IntHeap(final int[] array) {
-        setArray(array);
+        this.array = Utils.argumentNotNull(array, "array");
     }
 
+    /**
+     * Gets the underlying array of the heap.
+     * 
+     * @return the underlying array of the heap
+     */
     public int[] getArray() {
         return array;
     }
 
+    /**
+     * Sets the underlying array of the heap and set the size to be the length of given array.
+     * <p>
+     * <i>Caution</i>: If the heap was heapified before this method call, it may become no longer heapified.
+     * 
+     * @param array
+     *            the array to set
+     * @return this object itself for fluent calls
+     */
     public IntHeap setArray(int[] array) {
         this.array = Utils.argumentNotNull(array, "array");
-        if (size > array.length) size = array.length;
+        size = array.length;
         return this;
     }
 
     @Override
-    protected int getArrayLength() {
+    int getArrayLength() {
         return array.length;
     }
 
+    /**
+     * Gets the comparator used to compare the elements in the heap, or null if natural ordering is used.
+     * 
+     * @return the comparator of the heap or null if no comparator was set
+     */
     @Override
+    @CheckForNull
     public IntComparator getComparator() {
         return comparator;
     }
 
-    public IntHeap setComparator(IntComparator comparator) {
+    /**
+     * Sets the comparator to be used to compare the elements in the heap, or null to use natural ordering.
+     * <p>
+     * <i>Caution</i>: If the heap was heapified before this method call, it may become no longer heapified.
+     * 
+     * @param comparator
+     *            the comparator to set or null
+     * @return this object itself for fluent calls
+     */
+    public IntHeap setComparator(@CheckForNull IntComparator comparator) {
         this.comparator = comparator;
         setAscending(ordering.isAscending());
         return this;
     }
 
-    private void grow(int minCapacity) {
+    @Override
+    void grow(int minCapacity) {
         array = Arrays.copyOf(array, ArrayUtils.newCapacity(getArrayLength(), minCapacity));
     }
 
-    public int peek() {
+    /**
+     * Gets, but does not remove, the root of this heap.
+     * 
+     * @return the root of this heap
+     * @throws java.util.NoSuchElementException
+     *             when heap is empty
+     */
+    public int root() {
         ensureNotEmpty();
         return array[0];
     }
 
-    public int poll() {
+    /**
+     * Gets and removes the root of this heap.
+     * 
+     * @return the root of this heap.
+     * @throws java.util.NoSuchElementException
+     *             when heap is empty
+     */
+    public int remove() {
         ensureNotEmpty();
         int s = --size;
         // modCount++;
@@ -64,53 +154,80 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
         return result;
     }
 
-    public int pollAndOffer(int e) {
+    /**
+     * Gets and removes the root of this heap, and in the meantime adds the new element to the heap, keeping the heap
+     * size consistent.
+     * 
+     * @param value
+     *            the value to swap with the root of heap
+     * @return the root of this heap.
+     * @throws java.util.NoSuchElementException
+     *             when heap is empty
+     */
+    public int swap(int value) {
         ensureNotEmpty();
         // modCount++;
         int result = array[0];
-        siftDown(0, e);
+        siftDown(0, value);
         return result;
     }
 
-    private void ensureNotEmpty() {
-        if (size == 0) throw new NoSuchElementException();
-    }
-
-    public boolean offer(int e) {
+    /**
+     * Inserts the specified element into this heap.
+     * 
+     * @param value
+     *            the element to be added to heap
+     */
+    public void add(int value) {
         // modCount++;
         int i = size;
         if (i >= getArrayLength()) grow(i + 1);
         size = i + 1;
-        if (i == 0) array[0] = e;
-        else siftUp(i, e);
-        return true;
+        if (i == 0) array[0] = value;
+        else siftUp(i, value);
     }
 
     /**
-     * Version of remove using reference equality, not equals. Needed by iterator.remove.
+     * Returns {@code true} if this heap contains the specified value.
      * 
-     * @param o
-     *            element to be removed from this queue, if present
+     * @param value
+     *            value to be checked for containment in this heap
+     * @return {@code true} if this heap contains the specified value
+     */
+    public boolean contains(int value) {
+        return indexOf(value) != -1;
+    }
+
+    /**
+     * Removes the specified value from the heap.
+     * 
+     * @param value
+     *            value of the element to be removed from this heap, if present
      * @return {@code true} if removed
      */
-    public boolean removeEq(int o) {
-        for (int i = 0; i < size; i++) {
-            if (o == array[i]) {
-                removeAt(i);
-                return true;
-            }
-        }
-        return false;
+    public boolean remove(int value) {
+        int i = indexOf(value);
+        if (i == -1) return false;
+        removeAt(i);
+        return true;
+    }
+
+    private int indexOf(final int value) {
+        for (int i = 0; i < size; i++)
+            if (value == array[i]) return i;
+        return -1;
     }
 
     /**
      * Removes the ith element from heap.
      * 
-     * Normally this method leaves the elements at up to i-1, inclusive, untouched. Under these circumstances, it
-     * returns null. Occasionally, in order to maintain the heap invariant, it must swap a later element of the list
-     * with one earlier than i. Under these circumstances, this method returns the element that was previously at the
-     * end of the list and is now at some position before i. This fact is used by iterator.remove so as to avoid missing
-     * traversing elements.
+     * @param i
+     *            the index of the element in the heap to be removed
+     * @return Normally this method leaves the elements at up to i-1, inclusive, untouched. Under these circumstances,
+     *         it returns -1. Occasionally, in order to maintain the heap invariant, it must swap a later element of the
+     *         list with one earlier than i. Under these circumstances, this method returns the position of the element
+     *         that was previously at the end of the list and is now at some position before i.
+     * 
      */
     public int removeAt(int i) {
         ensureNotEmpty();
@@ -126,6 +243,9 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
         return -1;
     }
 
+    /**
+     * Sorts the elements in the heap using heap sort algorithm according to the scending and comparator properties.
+     */
     public void sort() {
         final int originalSize = size;
         final Ordering originalOrdering = ordering;
@@ -133,6 +253,7 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
         try {
             heapify();
             switch (ordering) {
+            default:
             case NATURAL_ASC:
                 for (int i = originalSize - 1; i > 0; i--) {
                     int v = array[i];
@@ -172,9 +293,14 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
         }
     }
 
+    /**
+     * Establishes the heap invariant (described above) in the entire tree, assuming nothing about the order of the
+     * elements prior to the call.
+     */
     public void heapify() {
         final int middle = (size >>> 1) - 1;
         switch (ordering) {
+        default:
         case NATURAL_ASC:
             for (int i = middle; i >= 0; i--)
                 siftDownNatural(i, array[i]);
@@ -194,10 +320,20 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
         }
     }
 
+    /**
+     * Inserts element of given value at position index, maintaining heap invariant by promoting the new element up the
+     * tree until it is greater than or equal to its parent, or is the root.
+     * 
+     * @param index
+     *            the position to fill
+     * @param value
+     *            the value of the new element to insert
+     * @return the position where the new element eventually lands
+     */
     public int siftUp(int index, final int value) {
         switch (ordering) {
-        case NATURAL_ASC:
         default:
+        case NATURAL_ASC:
             return siftUpNatural(index, value);
         case NATURAL_DESC:
             return siftUpNaturalDesc(index, value);
@@ -221,6 +357,7 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
     }
 
     private int siftUpComparator(int index, final int value) {
+        assert comparator != null;
         while (index > 0) {
             int parent = (index - 1) >>> 1;
             int e = array[parent];
@@ -245,6 +382,7 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
     }
 
     private int siftUpComparatorDesc(int index, final int value) {
+        assert comparator != null;
         while (index > 0) {
             int parent = (index - 1) >>> 1;
             int e = array[parent];
@@ -256,24 +394,31 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
         return index;
     }
 
-    public void siftDown(int index, final int value) {
+    /**
+     * Inserts new element of given value at position index, maintaining heap invariant by demoting the element down the
+     * tree repeatedly until it is less than or equal to its children or is a leaf.
+     * 
+     * @param index
+     *            the position to fill
+     * @param value
+     *            the value of new element to insert
+     * @return the position where the new element eventually land
+     */
+    public int siftDown(int index, final int value) {
         switch (ordering) {
+        default:
         case NATURAL_ASC:
-            siftDownNatural(index, value);
-            return;
+            return siftDownNatural(index, value);
         case NATURAL_DESC:
-            siftDownNaturalDesc(index, value);
-            return;
+            return siftDownNaturalDesc(index, value);
         case COMPARATOR_ASC:
-            siftDownComparator(index, value);
-            return;
+            return siftDownComparator(index, value);
         case COMPARATOR_DESC:
-            siftDownComparatorDesc(index, value);
-            return;
+            return siftDownComparatorDesc(index, value);
         }
     }
 
-    private void siftDownNatural(int index, final int value) {
+    private int siftDownNatural(int index, final int value) {
         int half = size >>> 1;
         while (index < half) {        // loop while a non-leaf
             int child = (index << 1) + 1; // assume left child is least
@@ -285,9 +430,11 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
             index = child;
         }
         array[index] = value;
+        return index;
     }
 
-    private void siftDownComparator(int index, final int value) {
+    private int siftDownComparator(int index, final int value) {
+        assert comparator != null;
         int half = size >>> 1;
         while (index < half) {        // loop while a non-leaf
             int child = (index << 1) + 1; // assume left child is least
@@ -299,9 +446,10 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
             index = child;
         }
         array[index] = value;
+        return index;
     }
 
-    private void siftDownNaturalDesc(int index, final int value) {
+    private int siftDownNaturalDesc(int index, final int value) {
         int half = size >>> 1;
         while (index < half) {        // loop while a non-leaf
             int child = (index << 1) + 1; // assume left child is largest
@@ -313,9 +461,11 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
             index = child;
         }
         array[index] = value;
+        return index;
     }
 
-    private void siftDownComparatorDesc(int index, final int value) {
+    private int siftDownComparatorDesc(int index, final int value) {
+        assert comparator != null;
         int half = size >>> 1;
         while (index < half) {        // loop while a non-leaf
             int child = (index << 1) + 1; // assume left child is largest
@@ -327,6 +477,7 @@ public final class IntHeap extends AbstractHeap<IntHeap> {
             index = child;
         }
         array[index] = value;
+        return index;
     }
 
 }
