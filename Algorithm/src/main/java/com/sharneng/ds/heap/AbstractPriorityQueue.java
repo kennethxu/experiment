@@ -1,4 +1,4 @@
-package com.sharneng.algorithm.heap;
+package com.sharneng.ds.heap;
 
 import java.util.AbstractQueue;
 import java.util.ArrayDeque;

@@ -1,10 +1,12 @@
 package com.sharneng.algorithm;
 
+import javax.annotation.CheckForNull;
+
 import org.hamcrest.Description;
 
-public abstract class AbstractSortedArrayMatcher extends AbstractArrayMatcher {
+public abstract class AbstractSortedArrayMatcher<A> extends AbstractArrayMatcher<A> {
 
-    protected AbstractSortedArrayMatcher(final int size, final Scending scending) {
+    protected AbstractSortedArrayMatcher(final int size, @CheckForNull final Scending scending) {
         super(size, scending);
     }
 

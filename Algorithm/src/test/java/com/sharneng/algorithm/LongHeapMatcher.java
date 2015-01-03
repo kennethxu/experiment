@@ -1,9 +1,12 @@
 package com.sharneng.algorithm;
 
+import javax.annotation.CheckForNull;
+
 import org.hamcrest.Description;
 
-class LongHeapMatcher extends AbstractHeapMatcher {
+class LongHeapMatcher extends AbstractHeapMatcher<long[]> {
     private final LongComparator comparator;
+    @CheckForNull
     private long[] array;
 
     public LongHeapMatcher(int size, final Scending scending) {
@@ -19,6 +22,7 @@ class LongHeapMatcher extends AbstractHeapMatcher {
 
     @Override
     protected boolean isInOrder(int front, int back) {
+    	assert(array != null);
         return comparator.compare(array[front], array[back]) <= 0;
     }
 

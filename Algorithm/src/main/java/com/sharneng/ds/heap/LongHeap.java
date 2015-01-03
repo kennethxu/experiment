@@ -1,7 +1,7 @@
-package com.sharneng.algorithm.heap;
+package com.sharneng.ds.heap;
 
 import com.sharneng.algorithm.ArrayUtils;
-import java.util.Comparator;
+import com.sharneng.algorithm.LongComparator;
 import com.sharneng.algorithm.Utils;
 
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import javax.annotation.CheckForNull;
 
 /**
  * An unbounded long binary heap. The elements of the heap are ordered according to their natural ordering, or by an
- * {@link Comparator} property, and the scending property.
+ * {@link LongComparator} property, and the scending property.
  * 
  * <p>
  * The <em>root</em> of this heap is the first element of the underlying array. It is the <em>least</em> element when
@@ -30,31 +30,29 @@ import javax.annotation.CheckForNull;
  * 
  * <p>
  * Implementation note: this implementation provides O(log(n)) time for the inserting and removing methods, e.g.
- * {@code remove()} and {@code add}. linear time for the {@code remove(E)} and {@code contains(E)} methods; and constant
- * time for the retrieval methods ({@code element}, and {@code size}). This implementation of heap data structure
- * provides the various heap operations with little protection. This is a sharp knife, you get great flexibility to
- * manage the heap and in the meantime you can corrupt the structure if not careful. {@link LongPriorityQueue} provides
- * a better protected queue implementation based on {@link Heap}.
+ * {@code remove()} and {@code add}. linear time for the {@code remove(long)} and {@code contains(long)} methods; and
+ * constant time for the retrieval methods ({@code element}, and {@code size}). This implementation of heap data
+ * structure provides the various heap operations with little protection. This is a sharp knife, you get great
+ * flexibility to manage the heap and in the meantime you can corrupt the structure if not careful.
+ * {@link LongPriorityQueue} provides a better protected queue implementation based on {@link LongHeap}.
  * 
  * <p>
  * This class provide sift methods to deal with one element at a time, heapify method to reorder the underlying array
  * into a binary heap, and sort method to sort the underlying array using the heap sort.
  * 
  * @author Kenneth Xu copied and adapted from open JDK implementation
- * @param <E>
- *            type of the element in the heap
+ * 
  */
-public final class Heap<E> extends AbstractHeap<Heap<E>> {
-    E[] array;
+public final class LongHeap extends AbstractHeap<LongHeap> {
+    long[] array;
     @CheckForNull
-    private Comparator<? super E> comparator;
+    private LongComparator comparator;
 
     /**
      * Construct a zero size heap with default capacity.
      */
-    @SuppressWarnings("unchecked")
-    public Heap() {
-        array = (E[]) new Object[DEFAULT_INITIAL_CAPACITY];
+    public LongHeap() {
+        array = new long[DEFAULT_INITIAL_CAPACITY];
     }
 
     /**
@@ -63,7 +61,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      * @param array
      *            the array to be used as underlying heap storage
      */
-    public Heap(final E[] array) {
+    public LongHeap(final long[] array) {
         this.array = Utils.argumentNotNull(array, "array");
     }
 
@@ -72,7 +70,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      * 
      * @return the underlying array of the heap
      */
-    public E[] getArray() {
+    public long[] getArray() {
         return array;
     }
 
@@ -85,7 +83,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      *            the array to set
      * @return this object itself for fluent calls
      */
-    public Heap<E> setArray(E[] array) {
+    public LongHeap setArray(long[] array) {
         this.array = Utils.argumentNotNull(array, "array");
         size = array.length;
         return this;
@@ -103,7 +101,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      */
     @Override
     @CheckForNull
-    public Comparator<? super E> getComparator() {
+    public LongComparator getComparator() {
         return comparator;
     }
 
@@ -116,7 +114,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      *            the comparator to set or null
      * @return this object itself for fluent calls
      */
-    public Heap<E> setComparator(@CheckForNull Comparator<? super E> comparator) {
+    public LongHeap setComparator(@CheckForNull LongComparator comparator) {
         this.comparator = comparator;
         setAscending(ordering.isAscending());
         return this;
@@ -134,7 +132,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      * @throws java.util.NoSuchElementException
      *             when heap is empty
      */
-    public E root() {
+    public long root() {
         ensureNotEmpty();
         return array[0];
     }
@@ -146,12 +144,12 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      * @throws java.util.NoSuchElementException
      *             when heap is empty
      */
-    public E remove() {
+    public long remove() {
         ensureNotEmpty();
         int s = --size;
         // modCount++;
-        E result = array[0];
-        E x = array[s];
+        long result = array[0];
+        long x = array[s];
         if (s != 0) siftDown(0, x);
         return result;
     }
@@ -166,10 +164,10 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      * @throws java.util.NoSuchElementException
      *             when heap is empty
      */
-    public E swap(E value) {
+    public long swap(long value) {
         ensureNotEmpty();
         // modCount++;
-        E result = array[0];
+        long result = array[0];
         siftDown(0, value);
         return result;
     }
@@ -180,7 +178,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      * @param value
      *            the element to be added to heap
      */
-    public void add(E value) {
+    public void add(long value) {
         // modCount++;
         int i = size;
         if (i >= getArrayLength()) grow(i + 1);
@@ -196,7 +194,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      *            value to be checked for containment in this heap
      * @return {@code true} if this heap contains the specified value
      */
-    public boolean contains(@CheckForNull final Object value) {
+    public boolean contains(final long value) {
         return indexOf(value) != -1;
     }
 
@@ -207,16 +205,16 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      *            value of the element to be removed from this heap, if present
      * @return {@code true} if removed
      */
-    public boolean remove(@CheckForNull final Object value) {
+    public boolean remove(final long value) {
         int i = indexOf(value);
         if (i == -1) return false;
         removeAt(i);
         return true;
     }
 
-    private int indexOf(@CheckForNull final Object value) {
+    private int indexOf(final long value) {
         for (int i = 0; i < size; i++)
-            if (array[i].equals(value)) return i;
+            if (value == array[i]) return i;
         return -1;
     }
 
@@ -235,7 +233,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
         ensureNotEmpty();
         int s = --size;
         if (s != i) { // if not removed last element
-            E moved = array[s];
+            long moved = array[s];
             siftDown(i, moved);
             if (array[i] == moved) {
                 int index = siftUp(i, moved);
@@ -258,7 +256,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
             default:
             case NATURAL_ASC:
                 for (int i = originalSize - 1; i > 0; i--) {
-                    E v = array[i];
+                    long v = array[i];
                     array[i] = array[0];
                     size = i;
                     siftDownNatural(0, v);
@@ -266,7 +264,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
                 return;
             case NATURAL_DESC:
                 for (int i = originalSize - 1; i > 0; i--) {
-                    E v = array[i];
+                    long v = array[i];
                     array[i] = array[0];
                     size = i;
                     siftDownNaturalDesc(0, v);
@@ -274,7 +272,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
                 return;
             case COMPARATOR_ASC:
                 for (int i = originalSize - 1; i > 0; i--) {
-                    E v = array[i];
+                    long v = array[i];
                     array[i] = array[0];
                     size = i;
                     siftDownComparator(0, v);
@@ -282,7 +280,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
                 return;
             case COMPARATOR_DESC:
                 for (int i = originalSize - 1; i > 0; i--) {
-                    E v = array[i];
+                    long v = array[i];
                     array[i] = array[0];
                     size = i;
                     siftDownComparatorDesc(0, v);
@@ -332,7 +330,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      *            the value of the new element to insert
      * @return the position where the new element eventually lands
      */
-    public int siftUp(int index, final E value) {
+    public int siftUp(int index, final long value) {
         switch (ordering) {
         default:
         case NATURAL_ASC:
@@ -346,13 +344,11 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
         }
     }
 
-    private int siftUpNatural(int index, final E value) {
-        @SuppressWarnings("unchecked")
-        final Comparable<? super E> v = (Comparable<? super E>) value;
+    private int siftUpNatural(int index, final long value) {
         while (index > 0) {
             int parent = (index - 1) >>> 1;
-            E e = array[parent];
-            if (v.compareTo(e) >= 0) break;
+            long e = array[parent];
+            if (value >= e) break;
             array[index] = e;
             index = parent;
         }
@@ -360,11 +356,11 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
         return index;
     }
 
-    private int siftUpComparator(int index, final E value) {
+    private int siftUpComparator(int index, final long value) {
         assert comparator != null;
         while (index > 0) {
             int parent = (index - 1) >>> 1;
-            E e = array[parent];
+            long e = array[parent];
             if (comparator.compare(value, e) >= 0) break;
             array[index] = e;
             index = parent;
@@ -373,13 +369,11 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
         return index;
     }
 
-    private int siftUpNaturalDesc(int index, final E value) {
-        @SuppressWarnings("unchecked")
-        final Comparable<? super E> v = (Comparable<? super E>) value;
+    private int siftUpNaturalDesc(int index, final long value) {
         while (index > 0) {
             int parent = (index - 1) >>> 1;
-            E e = array[parent];
-            if (v.compareTo(e) <= 0) break;
+            long e = array[parent];
+            if (value <= e) break;
             array[index] = e;
             index = parent;
         }
@@ -387,11 +381,11 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
         return index;
     }
 
-    private int siftUpComparatorDesc(int index, final E value) {
+    private int siftUpComparatorDesc(int index, final long value) {
         assert comparator != null;
         while (index > 0) {
             int parent = (index - 1) >>> 1;
-            E e = array[parent];
+            long e = array[parent];
             if (comparator.compare(value, e) <= 0) break;
             array[index] = e;
             index = parent;
@@ -410,7 +404,7 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
      *            the value of new element to insert
      * @return the position where the new element eventually land
      */
-    public int siftDown(int index, final E value) {
+    public int siftDown(int index, final long value) {
         switch (ordering) {
         default:
         case NATURAL_ASC:
@@ -424,16 +418,14 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private int siftDownNatural(int index, final E value) {
-        final Comparable<? super E> v = (Comparable<? super E>) value;
+    private int siftDownNatural(int index, final long value) {
         int half = size >>> 1;
         while (index < half) {        // loop while a non-leaf
             int child = (index << 1) + 1; // assume left child is least
-            E c = array[child];
+            long c = array[child];
             int right = child + 1;
-            if (right < size && ((Comparable<? super E>) c).compareTo(array[right]) > 0) c = array[child = right];
-            if (v.compareTo(c) <= 0) break;
+            if (right < size && c > array[right]) c = array[child = right];
+            if (value <= c) break;
             array[index] = c;
             index = child;
         }
@@ -441,12 +433,12 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
         return index;
     }
 
-    private int siftDownComparator(int index, final E value) {
+    private int siftDownComparator(int index, final long value) {
         assert comparator != null;
         int half = size >>> 1;
         while (index < half) {        // loop while a non-leaf
             int child = (index << 1) + 1; // assume left child is least
-            E c = array[child];
+            long c = array[child];
             int right = child + 1;
             if (right < size && comparator.compare(c, array[right]) > 0) c = array[child = right];
             if (comparator.compare(value, c) <= 0) break;
@@ -457,16 +449,14 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
         return index;
     }
 
-    @SuppressWarnings("unchecked")
-    private int siftDownNaturalDesc(int index, final E value) {
-        final Comparable<? super E> v = (Comparable<? super E>) value;
+    private int siftDownNaturalDesc(int index, final long value) {
         int half = size >>> 1;
         while (index < half) {        // loop while a non-leaf
             int child = (index << 1) + 1; // assume left child is largest
-            E c = array[child];
+            long c = array[child];
             int right = child + 1;
-            if (right < size && ((Comparable<? super E>) c).compareTo(array[right]) < 0) c = array[child = right];
-            if (v.compareTo(c) >= 0) break;
+            if (right < size && c < array[right]) c = array[child = right];
+            if (value >= c) break;
             array[index] = c;
             index = child;
         }
@@ -474,12 +464,12 @@ public final class Heap<E> extends AbstractHeap<Heap<E>> {
         return index;
     }
 
-    private int siftDownComparatorDesc(int index, final E value) {
+    private int siftDownComparatorDesc(int index, final long value) {
         assert comparator != null;
         int half = size >>> 1;
         while (index < half) {        // loop while a non-leaf
             int child = (index << 1) + 1; // assume left child is largest
-            E c = array[child];
+            long c = array[child];
             int right = child + 1;
             if (right < size && comparator.compare(c, array[right]) < 0) c = array[child = right];
             if (comparator.compare(value, c) >= 0) break;

@@ -1,7 +1,7 @@
 package com.sharneng.algorithm.median;
 
 import com.sharneng.algorithm.Scending;
-import com.sharneng.algorithm.heap.IntHeap;
+import com.sharneng.ds.heap.IntHeap;
 
 /**
  * A class can be used to obtain the median value of all integers inserted into it.
@@ -26,8 +26,8 @@ public class MedianFinder {
      * @return the median value of all inserted elements.
      */
     public int getMedian() {
-        if (count == 0) throw new IllegalStateException("No element");
-        return count % 2 == ODD ? median : (left.root() + right.root()) / 2;
+        if (count <= 0) throw new IllegalStateException("No element");
+        return count % 2 == 0 ? (left.root() + right.root()) / 2 : median;
     }
 
     /**

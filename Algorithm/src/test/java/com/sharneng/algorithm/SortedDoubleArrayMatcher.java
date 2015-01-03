@@ -1,9 +1,12 @@
 package com.sharneng.algorithm;
 
+import javax.annotation.CheckForNull;
+
 import org.hamcrest.Description;
 
-class SortedDoubleArrayMatcher extends AbstractSortedArrayMatcher {
+class SortedDoubleArrayMatcher extends AbstractSortedArrayMatcher<double[]> {
     private final DoubleComparator comparator;
+    @CheckForNull
     private double[] array;
 
     public SortedDoubleArrayMatcher(int size, final Scending scending) {
@@ -19,6 +22,7 @@ class SortedDoubleArrayMatcher extends AbstractSortedArrayMatcher {
 
     @Override
     protected boolean isInOrder(int front, int back) {
+    	assert(array != null);
         return comparator.compare(array[front], array[back]) <= 0;
     }
 

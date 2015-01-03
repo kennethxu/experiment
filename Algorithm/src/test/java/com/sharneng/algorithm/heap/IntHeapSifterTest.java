@@ -1,12 +1,12 @@
 package com.sharneng.algorithm.heap;
 
 import static org.junit.Assert.*;
-
-
 import static com.sharneng.algorithm.Matchers.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.sharneng.ds.heap.IntHeap;
 
 import java.util.Random;
 

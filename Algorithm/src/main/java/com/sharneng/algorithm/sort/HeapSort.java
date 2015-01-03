@@ -1,6 +1,6 @@
 package com.sharneng.algorithm.sort;
 
-import com.sharneng.algorithm.heap.IntHeap;
+import com.sharneng.ds.heap.IntHeap;
 
 public class HeapSort implements Sorter {
 

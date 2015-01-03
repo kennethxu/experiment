@@ -1,16 +1,18 @@
 package com.sharneng.algorithm;
 
+import javax.annotation.CheckForNull;
+
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-public abstract class AbstractArrayMatcher extends BaseMatcher<int[]> {
-
+public abstract class AbstractArrayMatcher<A> extends BaseMatcher<A> {
+    @CheckForNull
     protected final Scending sending;
     protected final int size;
     protected int failedAt;
     protected int actualSize;
 
-    protected AbstractArrayMatcher(int size, Scending sending) {
+    protected AbstractArrayMatcher(int size, @CheckForNull Scending sending) {
         this.sending = sending;
         this.size = size;
     }
@@ -24,17 +26,7 @@ public abstract class AbstractArrayMatcher extends BaseMatcher<int[]> {
                 .appendText(" elements ");
         descriptionStructure(description);
         description.appendText(" heapified in the order of ");
-        switch (sending) {
-        case ASCENDING:
-            description.appendText("ascending");
-            break;
-        case DESCENDING:
-            description.appendText("descending");
-            break;
-        default:
-            description.appendText("comparator");
-            break;
-        }
+        description.appendText(sending == null ? "comparator" : sending == Scending.ASCENDING ? "ascending" : "descending");
     }
 
     @Override

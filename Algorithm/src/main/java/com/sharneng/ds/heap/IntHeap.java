@@ -1,4 +1,4 @@
-package com.sharneng.algorithm.heap;
+package com.sharneng.ds.heap;
 
 import com.sharneng.algorithm.ArrayUtils;
 import com.sharneng.algorithm.IntComparator;

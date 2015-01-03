@@ -1,4 +1,4 @@
-package com.sharneng.algorithm.heap;
+package com.sharneng.ds.heap;
 
 import com.sharneng.algorithm.Scending;
 
@@ -39,7 +39,8 @@ import javax.annotation.CheckForNull;
  * 
  * <p>
  * This implementation is different from {@link java.util.PriorityQueue PriorityQueue&lt;E>} is that this implementation
- * supports both ascending and descending ordering.
+ * supports both ascending and descending ordering. Plus a {@link #swap(Object)} method to dequeue and enqueue in one
+ * single operation.
  * 
  * <p>
  * Implementation note: this implementation provides O(log(n)) time for the enqueing and dequeing methods

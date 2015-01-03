@@ -1,9 +1,12 @@
 package com.sharneng.algorithm;
 
+import javax.annotation.CheckForNull;
+
 import org.hamcrest.Description;
 
-class FloatHeapMatcher extends AbstractHeapMatcher {
+class FloatHeapMatcher extends AbstractHeapMatcher<float[]> {
     private final FloatComparator comparator;
+    @CheckForNull
     private float[] array;
 
     public FloatHeapMatcher(int size, final Scending scending) {
@@ -19,6 +22,7 @@ class FloatHeapMatcher extends AbstractHeapMatcher {
 
     @Override
     protected boolean isInOrder(int front, int back) {
+    	assert(array != null);
         return comparator.compare(array[front], array[back]) <= 0;
     }
 

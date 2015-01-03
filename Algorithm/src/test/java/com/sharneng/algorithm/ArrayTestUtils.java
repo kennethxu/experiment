@@ -26,7 +26,7 @@ public class ArrayTestUtils {
         int[] a = new int[n];
         Random r = new Random();
         for (int i = n - 1; i >= 0; i--) {
-            a[i] = Math.abs(r.nextInt());
+            a[i] = r.nextInt(Integer.MAX_VALUE);
         }
         return a;
 
