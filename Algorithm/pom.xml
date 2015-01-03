@@ -50,7 +50,30 @@
         <version>3.0.1</version>
         <scope>test</scope>
     </dependency>
+    <dependency>
+    	<groupId>org.apache.commons</groupId>
+    	<artifactId>commons-collections4</artifactId>
+    	<version>4.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.scala-lang</groupId>
+    	<artifactId>scala-library</artifactId>
+    	<version>2.11.4</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.scalatest</groupId>
+    	<artifactId>scalatest_2.11</artifactId>
+    	<version>2.2.3</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+	    <groupId>org.unitils</groupId>
+	    <artifactId>unitils-core</artifactId>
+	    <version>3.4.2</version>
+	    <scope>test</scope>
+	</dependency>
   </dependencies>
+  
   <build>
     <plugins>
       <plugin>
@@ -62,6 +85,67 @@
             <target>1.7</target>
         </configuration>
       </plugin>
+      
+	  <plugin>
+	    <groupId>net.alchim31.maven</groupId>
+	    <artifactId>scala-maven-plugin</artifactId>
+	    <version>3.1.6</version>
+	    <configuration>
+	        <recompileMode>incremental</recompileMode>
+	        <args>
+	            <arg>-deprecation</arg>
+	            <arg>-explaintypes</arg>
+	            <arg>-target:jvm-1.7</arg>
+	        </args>
+	    </configuration>
+	    <executions>
+	        <execution>
+	            <id>scala-compile-first</id>
+	            <phase>process-resources</phase>
+	            <goals>
+	                <goal>add-source</goal>
+	                <goal>compile</goal>
+	            </goals>
+	        </execution>
+	        <execution>
+	            <id>scala-test-compile</id>
+	            <phase>process-test-resources</phase>
+	            <goals>
+	                <goal>add-source</goal>
+	                <goal>testCompile</goal>
+	            </goals>
+	        </execution>
+	    </executions>
+	  </plugin>
     </plugins>
   </build>
+<!--
+  <pluginRepositories>
+    <pluginRepository>
+        <id>scala</id>
+        <name>Scala Tools</name>
+        <url>http://scala-tools.org/repo-releases/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <repositories>
+    <repository>
+        <id>scala</id>
+        <name>Scala Tools</name>
+        <url>http://scala-tools.org/repo-releases/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+  </repositories>
+ --> 
 </project>
