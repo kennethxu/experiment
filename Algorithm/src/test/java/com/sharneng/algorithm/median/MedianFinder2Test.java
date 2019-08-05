@@ -1,16 +1,14 @@
-package com.sharneng.experiment.median;
+package com.sharneng.algorithm.median;
 
 import com.sharneng.algorithm.median.MedianFinder;
-
+import org.junit.Assert;
 import org.junit.Test;
 
-import org.junit.Assert;
-
-public class MedianFinderTest {
+public class MedianFinder2Test {
 
     @Test
     public void test() {
-        MedianFinder sut = new MedianFinder();
+        MedianFinder2 sut = new MedianFinder2();
 
         sut.insert(60);
         Assert.assertEquals(60, sut.getMedian());

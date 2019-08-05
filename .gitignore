@@ -4,4 +4,10 @@
 
 .settings
 
+.idea
+
+.DS_Store
+
 target
+
+.cache*
