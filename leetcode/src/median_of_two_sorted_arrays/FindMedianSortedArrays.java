@@ -32,9 +32,16 @@ public class FindMedianSortedArrays {
                 {"2|1,3,4", new int[]{2}, new int[]{1,3,4}, 2.5},
         });
     }
+    
     @Test
     public void findMedianSortedArrays() {
         double result = new Solution().findMedianSortedArrays(nums1, nums2);
+        Assert.assertEquals(expected, result, 0.1);
+    }
+
+    @Test
+    public void findMedianSortedArrays2() {
+        double result = new Solution2().findMedianSortedArrays(nums1, nums2);
         Assert.assertEquals(expected, result, 0.1);
     }
 }
