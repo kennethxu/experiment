@@ -2,25 +2,25 @@ package median_of_two_sorted_arrays;
 
 class Solution {
     public double findMedianSortedArrays(final int[] nums1, final int[] nums2) {
-        if (nums1.length > nums2.length) return findMedianSortedArrays(nums2, nums1); // ensure nums1 is shorter;
+        final int n1 = nums1.length, n2 = nums2.length;
+        if (n1 > n2) return findMedianSortedArrays(nums2, nums1); // ensure nums1 is shorter;
 
-        final int n = nums1.length + nums2.length;
-        final int r1 = nums1.length - 1, r2 = nums2.length - 1;
+        for (int start = 0, end = n1;;) { // initail range is [start, end)
+            // binary cut nums1 to [start, cut1) and [cut1, end)
+            final int cut1 = (end + start) / 2;
+            // cut nums2 so that elements count nums1[<cut1] + nums2[<cut2) is  the smaller (when odd) half of total.
+            final int cut2 = (n1 + n2) / 2 - cut1;
 
-        for (int start = 0, end = r1;;) {
-            int mid1 = (end + start + 2) / 2 - 1;
-            int mid2 = (n - 1) / 2 - mid1 - 1;
+            final int left1 = cut1 == 0 ? Integer.MIN_VALUE : nums1[cut1-1];
+            final int left2 = cut2 == 0 ? Integer.MIN_VALUE : nums2[cut2-1];
+            final int right1 = cut1 == n1 ? Integer.MAX_VALUE : nums1[cut1];
+            final int right2 = cut2 == n2 ? Integer.MAX_VALUE : nums2[cut2];
 
-            int left1 = mid1 < 0 ? Integer.MIN_VALUE : nums1[mid1];
-            int left2 = mid2 < 0 ? Integer.MIN_VALUE : nums2[mid2];
-            int right1 = mid1 == r1 ? Integer.MAX_VALUE : nums1[mid1 + 1];
-            int right2 = mid2 == r2 ? Integer.MAX_VALUE : nums2[mid2 + 1];
-
-            if (left1 > right2) end = mid1 - 1;
-            else if (right1 < left2) start = mid1 + 1;
-            else return (n % 2 != 0) ?
-                        Math.max(left1, left2) :
-                        (Math.max(left1, left2) + Math.min(right1, right2)) / 2.0;
+            if (left1 > right2) end = cut1 -1 ; // nums1's left half is too big, iterate to the left
+            else if (right1 < left2) start = cut1 + 1; //nums1's right half is too small, iterate to the right
+            else return ((n1 + n2) % 2 == 0) ?
+                        (Math.max(left1, left2) + Math.min(right1, right2)) / 2.0 :
+                        Math.min(right1, right2); // if odd, the smallest of the right should be the median.
         }
     }
 }
