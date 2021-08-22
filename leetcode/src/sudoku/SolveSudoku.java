@@ -40,7 +40,7 @@ public class SolveSudoku {
         for (int i = 0; i < 10; i++) {
             s.solveSudoku(boards[i]);
         }
-        var time = System.nanoTime() - start;
+        long time = System.nanoTime() - start;
         Assert.assertArrayEquals(expected, boards[0]);
         System.out.println("Time: " + time / 1000000.0 / repeat);
     }

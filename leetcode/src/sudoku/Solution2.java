@@ -13,146 +13,85 @@ public class Solution2 implements Solution {
         }
     }
 
-    private static final Position[][] TABLE = new Position[9][9];
-    private static final Position[][] BLOCKS = new Position[9][9];
+    private static final int BLOCK = 0, ROW = 1, COL = 2;
+    private static final Position[][][] POS = new Position[3][9][9];
     static {
         for (int row = 0; row < 9; row++) for (int col = 0; col < 9; col++) {
             var d = new Position(row, col);
-            BLOCKS[d.block][d.blockIndex] = TABLE[d.row][d.col] = d;
+            POS[BLOCK][d.block][d.blockIndex] = POS[ROW][d.row][d.col] = POS[COL][d.col][d.row] = d;
         }
     }
 
-    private char[][] board;
-    private boolean[][] rows;
-    private boolean[][] cols;
-    private boolean[][] blocks;
-    private int[] rowCount, colCount, blockCount;
-    private int count;
+    private static class Sudoku {
+        char[][] board;
+        private int[][] count = new int[3][9];
+        private boolean[][][] used = new boolean[3][9][9];
+        private int counter = 0;
+
+        Sudoku(char[][] board) {
+            this.board = board;
+            for (var row : POS[ROW]) for (var d : row){
+                char c = board[d.row][d.col];
+                if (c == '.') continue;
+                mark(d, c - '1');
+            }
+        }
+
+        void unmark(Position p, int n) {
+            used[ROW][p.row][n] = used[COL][p.col][n] = used[BLOCK][p.block][n] = false;
+            count[ROW][p.row]--; count[COL][p.col]--; count[BLOCK][p.block]--;
+            counter--;
+        }
+
+        void mark(Position p, int n) {
+            used[ROW][p.row][n] = used[COL][p.col][n] = used[BLOCK][p.block][n] = true;
+            count[ROW][p.row]++; count[COL][p.col]++; count[BLOCK][p.block]++;
+            counter++;
+        }
+
+        Position next() {
+            int dim = BLOCK, x = 0;
+            for (int max = -1, d = 0; d < 3; d++) for (int i = 0; i < 9; i++) {
+                var c = count[d][i];
+                if (c < 9 && c > max) {
+                    max = c;
+                    x = i;
+                    dim = d;
+                }
+            }
+            int y = 0;
+            for (int max = -1, i = 0; i < 9; i++) {
+                var d = POS[dim][x][i];
+                if (board[d.row][d.col] == '.') {
+                    var c = count[ROW][d.row] + count[COL][d.col] + count[BLOCK][d.block];
+                    if (c > max) {
+                        max = c;
+                        y = i;
+                    }
+                }
+            }
+            return POS[dim][x][y];
+        }
+
+        boolean solve() {
+            return solve(next());
+        }
+
+        boolean solve(Position p) {
+            for (int n = 0; n < 9; n++) {
+                if (used[BLOCK][p.block][n] || used[ROW][p.row][n] || used[COL][p.col][n]) continue;
+                board[p.row][p.col] = (char) ('1' + n);
+                mark(p, n);
+                if (counter == 9 * 9 || solve(next())) return true;
+                unmark(p, n);
+                board[p.row][p.col] = '.';
+            }
+            return false;
+        }
+    }
 
     public void solveSudoku(char[][] board) {
-        this.board = board;
-        init(board);
-        solve(next());
+        new Sudoku(board).solve();
     }
 
-    private Position next() {
-        int index = 0, max = -1, dim = 0;
-        for (int i = 0; i < 9; i++) {
-            var c = blockCount[i];
-            if (c < 9 && c > max) {
-                max = c;
-                index = i;
-            }
-        }
-        for (int i = 0; i < 9; i++) {
-            var c = colCount[i];
-            if (c < 9 && c > max) {
-                max = c;
-                index = i;
-                dim = 1;
-            }
-        }
-        for (int i = 0; i < 9; i++) {
-            var c = rowCount[i];
-            if (c < 9 && c > max) {
-                max = c;
-                index = i;
-                dim = 2;
-            }
-        }
-        switch (dim) {
-            case 0: return nextBlock(index);
-            case 1: return nextCol(index);
-            default: return nextRow(index);
-        }
-    }
-
-    private Position nextBlock(int block) {
-        int blockIndex = 0;
-        for (int max = -1, i = 0; i < 9; i++) {
-            var d = BLOCKS[block][i];
-            if (board[d.row][d.col] == '.') {
-                 var c = colCount[d.col] + rowCount[d.row];
-                 if (c > max) {
-                     max = c;
-                     blockIndex = i;
-                 }
-            }
-        }
-        return BLOCKS[block][blockIndex];
-    }
-
-    private Position nextRow(int row) {
-        int col = 0;
-        for (int max = -1, i = 0; i < 9; i++) {
-            var d = TABLE[row][i];
-            if (board[d.row][d.col] == '.') {
-                var c = colCount[d.col] + blockCount[d.block];
-                if (c > max) {
-                    max = c;
-                    col = i;
-                }
-            }
-        }
-        return TABLE[row][col];
-    }
-
-    private Position nextCol(int col) {
-        int row = 0;
-        for (int max = -1, i = 0; i < 9; i++) {
-            var d = TABLE[i][col];
-            if (board[d.row][d.col] == '.') {
-                var c = rowCount[d.col] + blockCount[d.block];
-                if (c > max) {
-                    max = c;
-                    row = i;
-                }
-            }
-        }
-        return TABLE[row][col];
-    }
-
-    private boolean solve(Position d) {
-        for (int i = 0; i < 9; i++) {
-            if (blocks[d.block][i] || rows[d.row][i] || cols[d.col][i]) continue;
-            board[d.row][d.col] = (char) ('1' + i);
-            mark(d, i);
-            if (count == 9*9 || solve(next())) return true;
-            unmark(d, i);
-            board[d.row][d.col] = '.';
-        }
-        return false;
-    }
-
-    private void init(char[][] board) {
-        rows = new boolean[9][9];
-        cols = new boolean[9][9];
-        blocks = new boolean[9][9];
-        rowCount = new int[9];
-        colCount = new int[9];
-        blockCount = new int[9];
-        count = 0;
-        for (var row : TABLE) for (var d : row){
-            char c = board[d.row][d.col];
-            if (c == '.') continue;
-            int val = c - '1';
-            mark(d, val);
-        }
-    }
-
-    private void unmark(Position d, int val) {
-        rows[d.row][val] = cols[d.col][val] = blocks[d.block][val] = false;
-        rowCount[d.row]--;
-        colCount[d.col]--;
-        blockCount[d.block]--;
-        count--;
-    }
-
-    private void mark(Position d, int val) {
-        rows[d.row][val] = cols[d.col][val] = blocks[d.block][val] = true;
-        rowCount[d.row]++;
-        colCount[d.col]++;
-        blockCount[d.block]++;
-        count++;
-    }
 }
