@@ -22,15 +22,21 @@ public class MedianFinder2 {
      */
     public int getMedian() {
         if (count <= 0) throw new IllegalStateException("No element");
-        return (count & 0x1) == 1 ?
-                select(0, count-1, count/2):
-                (select(0, count-1, count/2)+ select(0, count-1, count/2-1)) / 2;
+        int middle = select(0, count-1, count/2);
+        return (count & 0x1) == 1 ? middle : (middle + max(0, count/2)) / 2;
+    }
+
+    private int max(int start, int end) {
+        int max = Integer.MIN_VALUE;
+        for (int i = start; i < end; i++) {
+            if (data[i] > max) max = data[i];
+        }
+        return max;
     }
 
     private int select(int left, int right, int k) {
-        if (left == right) return data[left];
-        int p = k;
-        p = partition(left, right, p);
+        if (left == right) return data[k];
+        int p = partition(left, right, k);
         if (k == p) return data[k];
         else if (k < p) {
             return select(left, p-1, k);
