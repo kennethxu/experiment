@@ -6,7 +6,7 @@ import org.junit.Test;
 public class MergeTwoLists {
     @Test
     public void mergeTwoLists() {
-        new Solution().mergeTwoLists(makeList(new int[]{1,2,4}), makeList(new int[]{1,3,4}));
+        var result = new Solution().mergeTwoLists(makeList(new int[]{1,2,4}), makeList(new int[]{1,3,4}));
     }
 
     private ListNode makeList(int[] a) {

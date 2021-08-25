@@ -2,7 +2,7 @@ package sudoku;
 
 // Algorithm to fill from top down and left to right
 
-public class Solution1 implements Solution{
+public class Solution1 implements SudokuSolver {
 
     private static class Dimension {
         public final int index, row, col, block;

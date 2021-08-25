@@ -13,11 +13,11 @@ public class SolveSudoku {
 
     @Test
     public void solveSudoku2() {
-        solve(new Solution2(), 0);
-        solve(new Solution2(), 1);
+        solve(new Solution(), 0);
+        solve(new Solution(), 1);
     }
 
-    private void solve(Solution s, int num) {
+    private void solve(SudokuSolver s, int num) {
         var sample = board(num);
         var board = sample[0];
         var expected = sample[1];
