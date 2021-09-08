@@ -41,24 +41,17 @@ public class Solution implements SudokuSolver {
         filled = 0;
         for (var row : POS[ROW]) for (var d : row) {
             char c = board[d.row][d.col];
-            if (c != '.') mark(d, c - '1');
+            if (c != '.') mark(d, c - '1', true);
         }
     }
 
-    private void unmark(Position p, int n) {
-        used[ROW][p.row][n] = used[COL][p.col][n] = used[BLOCK][p.block][n] = false;
-        count[ROW][p.row]--;
-        count[COL][p.col]--;
-        count[BLOCK][p.block]--;
-        filled--;
-    }
-
-    private void mark(Position p, int n) {
-        used[ROW][p.row][n] = used[COL][p.col][n] = used[BLOCK][p.block][n] = true;
-        count[ROW][p.row]++;
-        count[COL][p.col]++;
-        count[BLOCK][p.block]++;
-        filled++;
+    private void mark(Position p, int n, boolean value) {
+        used[ROW][p.row][n] = used[COL][p.col][n] = used[BLOCK][p.block][n] = value;
+        var inc = value ? 1 : -1;
+        count[ROW][p.row] += inc;
+        count[COL][p.col] += inc;
+        count[BLOCK][p.block] += inc;
+        filled += inc;
     }
 
     private Position next() {
@@ -89,9 +82,9 @@ public class Solution implements SudokuSolver {
         for (int n = 0; n < 9; n++) {
             if (used[BLOCK][p.block][n] || used[ROW][p.row][n] || used[COL][p.col][n]) continue;
             board[p.row][p.col] = (char) ('1' + n);
-            mark(p, n);
+            mark(p, n, true);
             if (filled == 9 * 9 || solve(next())) return true;
-            unmark(p, n);
+            mark(p, n, false);
             board[p.row][p.col] = '.';
         }
         return false;

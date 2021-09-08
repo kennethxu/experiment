@@ -4,9 +4,9 @@ package sudoku;
 
 public class Solution1 implements SudokuSolver {
 
-    private static class Dimension {
+    private static class Position {
         public final int index, row, col, block;
-        public Dimension(int index) {
+        public Position(int index) {
             this.index = index;
             row = index / 9;
             col = index % 9;
@@ -14,8 +14,8 @@ public class Solution1 implements SudokuSolver {
         }
     }
 
-    private static final Dimension[] FLAT = new Dimension[9 * 9];
-    static { for (int i = 0; i < 9 * 9; i++) FLAT[i] = new Dimension(i); }
+    private static final Position[] FLAT = new Position[9 * 9];
+    static { for (int i = 0; i < 9 * 9; i++) FLAT[i] = new Position(i); }
 
     private char[][] board;
     private boolean[][] rows;
@@ -23,12 +23,11 @@ public class Solution1 implements SudokuSolver {
     private boolean[][] blocks;
 
     public void solveSudoku(char[][] board) {
-        this.board = board;
         init(board);
         solve(next(0));
     }
 
-    private Dimension next(int index) {
+    private Position next(int index) {
         for (; index < 9 * 9; index++) {
             var d = FLAT[index];
             if (board[d.row][d.col] == '.') return d;
@@ -36,7 +35,7 @@ public class Solution1 implements SudokuSolver {
         return null;
     }
 
-    private boolean solve(Dimension d) {
+    private boolean solve(Position d) {
         for (int i = 0; i < 9; i++) {
             if (blocks[d.block][i] || rows[d.row][i] || cols[d.col][i]) continue;
             board[d.row][d.col] = (char) ('1' + i);
@@ -50,6 +49,7 @@ public class Solution1 implements SudokuSolver {
     }
 
     private void init(char[][] board) {
+        this.board = board;
         rows = new boolean[9][9];
         cols = new boolean[9][9];
         blocks = new boolean[9][9];
