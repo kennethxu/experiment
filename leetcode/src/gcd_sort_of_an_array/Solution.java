@@ -1,6 +1,6 @@
 package gcd_sort_of_an_array;
 
-import java.util.*;
+import java.util.Arrays;
 
 class Solution {
     private static final int[] primes;
@@ -25,9 +25,8 @@ class Solution {
 
         for (final var p : primes) {
             if (p > max / 2) break;
-            int group = p;
             map[p] = p;
-            for (int num = p + p; num <= max; num += p) {
+            for (int group = p, num = p + p; num <= max; num += p) {
                 var existing = map[num];
                 if (existing == 0) continue; // value doens't exist in array
                 if (existing == num) map[num] = group;  // 1st hit, set group, otherwise, group merging

@@ -23,6 +23,7 @@ public class GcdSort {
     public static Collection<Object[]> testCases() {
         return Arrays.asList(new Object[][] {
                 { "7,21,3", true, new int[]{7,21,3}},
+                { "7,21,3,29,23", false, new int[]{7,21,3,29,23}},
                 {"5,2,6,2", false, new int[]{5,2,6,2}},
                 {"10,5,9,3,15", true, new int[]{10,5,9,3,15}},
                 {"2,5,6,5,10", true, new int[]{2,5,6,5,10}},
