@@ -31,6 +31,7 @@ public class SmallestMissingValueSubtree {
                 {"Test2", new int[]{-1,0,1,0,3,3}, new int[]{5,4,6,2,1,3}, new int[]{7,1,1,4,2,1}},
                 {"Test3", new int[]{-1,2,3,0,2,4,1}, new int[]{2,3,4,5,6,7,8}, new int[]{1,1,1,1,1,1,1}},
                 {"Test4", new int[]{-1,0,0,2}, new int[]{5,3,2,1}, new int[]{4,1,3,2}},
+                {"Test5", new int[]{-1,2,3,0,2,4,1}, new int[]{5,8,3,4,9,2,1}, new int[]{6,2,4,5,1,1,2}},
                 loadTestData("TestData100000.txt"),
         });
     }
@@ -53,10 +54,7 @@ public class SmallestMissingValueSubtree {
     @Test
     public void smallestMissingValueSubtree() {
         Solution solution = new Solution();
-        long time = System.nanoTime();
         int[] result = solution.smallestMissingValueSubtree(parents, nums);
-        time = System.nanoTime() - time;
-        System.out.println("Length: " + nums.length + ", Complexity: " + solution.complexity + ", Time: " + time / 1000.0);
         Assert.assertArrayEquals(expected, result);
     }
 
