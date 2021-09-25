@@ -24,7 +24,7 @@ class Solution {
             if (parent >= 0) tree[parent][--counts[parent]] = child;
         }
 
-        var visited = new boolean[max+1];
+        var visited = new boolean[max+2];
         int[] queue = temp;
         // going from node 1 to root, only those nodes have smallest missing > 1
         for (int missing = 2, node = p1; node >= 0 ; node = parents[node]) {
@@ -39,7 +39,7 @@ class Solution {
                 }
             }
             // find next missing number that is not in the value set.
-            while(missing <= len && visited[missing]) missing++;
+            while(visited[missing]) missing++;
             result[node] = missing;
         }
 
