@@ -15,8 +15,7 @@ class Solution {
 
         for (int i = 0; i < n && nums[i] < 0; i++) {
             final int twoSum = -nums[i], half = twoSum / 2;
-            final int start = Arrays.binarySearch(nums, i+1, n, twoSum-nums[n-1]);
-            for (int j = start < 0 ? -start-1 : start; j < n && nums[j] <= half; j++) {
+            for (int j = i + 1; j < n && nums[j] <= half; j++) {
                 final int k = twoSum - nums[j];
                 if (k != nums[j] && counters.get(k)>0)  result.add(Arrays.asList(nums[i], nums[j], k));
             }
@@ -24,9 +23,7 @@ class Solution {
 
         for (int i = 0; i < n; i++) {
             int count = counters.get(nums[i]);
-            if (nums[i] == 0) {
-                if (count >= 3) result.add(Arrays.asList(new Integer[]{0, 0, 0}));
-            } else if (count >= 2 && counters.get(-2*nums[i]) > 0)
+            if (count >= 2 && counters.get(-2*nums[i]) > 0 && (nums[i] != 0 || count >= 3))
                 result.add(Arrays.asList(nums[i], nums[i], -2*nums[i]));
         }
         return result;
