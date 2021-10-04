@@ -10,50 +10,38 @@ class Solution {
         if (nums.length < 3) return result;
 
         Arrays.sort(nums);
-        var counters = new Counter(nums);
-        final int n = counters.size;
+        final int min = nums[0], max = nums[nums.length - 1];
+        final int[] counters = new int[max - min + 1];
 
-        for (int i = 0; i < n && nums[i] < 0; i++) {
-            final int twoSum = -nums[i], half = twoSum / 2;
-            for (int j = i + 1; j < n && nums[j] <= half; j++) {
-                final int k = twoSum - nums[j];
-                if (k != nums[j] && counters.get(k)>0)  result.add(Arrays.asList(nums[i], nums[j], k));
+        int n = 0;
+        for (int v : nums) {
+            int j = v - min;
+            int count = counters[j];
+            if (count == 0) {
+                nums[n++] = v;
+                counters[j] = 1;
+            } else {
+                counters[j] = count + 1;
             }
         }
 
+        for (int i = 0; i < n && nums[i] < 0; i++) {
+            final int twoSum = -nums[i], half = twoSum / 2;
+            final int start = Arrays.binarySearch(nums, i+1, n, twoSum-nums[n-1]);
+            for (int j = start < 0 ? -start-1 : start; j < n && nums[j] <= half; j++) {
+                final int k = twoSum - nums[j];
+                if (k != nums[j] && k >= min && k <= max && counters[k -min] > 0)  {
+                    result.add(Arrays.asList(nums[i], nums[j], k));
+                }
+            }
+        }
         for (int i = 0; i < n; i++) {
-            int count = counters.get(nums[i]);
-            if (count >= 2 && counters.get(-2*nums[i]) > 0 && (nums[i] != 0 || count >= 3))
-                result.add(Arrays.asList(nums[i], nums[i], -2*nums[i]));
+            int count = counters[nums[i] - min], k = -2*nums[i];
+            if (count >= 2 && k >= min && k <= max && counters[k - min] > 0 && (nums[i] != 0 || count >= 3)) {
+                result.add(Arrays.asList(nums[i], nums[i], k));
+            }
         }
         return result;
     }
 
-    private static class Counter {
-        private final int offset;
-        private final int[] counters;
-        public final int size;
-
-        Counter(int[] nums) {
-            offset = -nums[0];
-            counters = new int[nums[nums.length-1] - nums[0] + 1];
-            int i = 0;
-            for (int v : nums) {
-                int j = v + offset;
-                int count = counters[j];
-                if (count == 0) {
-                    nums[i++] = v;
-                    counters[j] = 1;
-                } else {
-                    counters[j] = count + 1;
-                }
-            }
-            size = i;
-        }
-
-        int get(int v) {
-            int i = v + offset;
-            return i < 0 || i >= counters.length ? 0 : counters[i];
-        }
-    }
 }
